@@ -10,7 +10,7 @@
 Diskgrösse: 8 GiB
 Betriebssystem: Linux/UNIX
 Grösse des RAM: 1 GiB
-Anzahl der CPUs: 1
+Anzahl der CPUs: 2
 
 ## Aufgabe C
 
