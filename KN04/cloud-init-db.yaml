@@ -1,0 +1,23 @@
+#cloud-config
+users:
+  - name: ubuntu
+    groups: [users, admin]
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDi51d/2wTEx0gk2LtL/YTGaCLORA0gOSHPyjxc5V9Npp9GK9/Pn+X9f0KdG836wdb+7+LcI1blHfkzGC8p9HWRL2dbaFe6oe012l+yyfyvDu4ZvmkjH3ar4BC8Q1f1oEH5ZP7FotmH7krU6uPjUoz3bM5vFExd7mFkLocWoEeiFPYDiJuRuAkxEZeLtYhzxIvMWEOPp9pXd7XCRE/h0PGYCZ6j0mfuxOhv10ChrYQ0W6uB62bAONydPOChduZTcLO1srymnMuUYpzRkBpvpVUXEpxLEZax8VuPj01FRAZlKJcf7g5ZpxhN+L4tV5ePiJV+0GYFrhk99VPkg49ej7zX aws-key
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4rmB7Zqsan3L1559XcTEgpCkIkC40jiaEkq94o3fdtFOSRBk5XX+RDloMr+9bkxbEyqDv5MAvdtTxeElvYdjP6wsbzISUiSgdCascoFcj6CO4JaCdTQegAfsNLzt+D1FnLuxTSIeecEGS05vfr69/yjLLcGsi9Sg4Tr7rLpewZIEnpEKTsQXLvPVtrnGOhILBV6Jv7m1CE5ozzjPTcj2neYqBSLF90w6+4rkl7Ue9Y+yLQEfhcW1I4KWwqjzAaI65pEx9uQX7bmpLV/lZnrg/CoYY0RajVKidQuCeTYhyaNHhTbCwiQ7wpKlO/3f2hd1/x+S+2fO3VrxYzEhNuFmN aws-key
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC0WGP1EZykEtv5YGC9nMiPFW3U3DmZNzKFO5nEu6uozEHh4jLZzPNHSrfFTuQ2GnRDSt+XbOtTLdcj26+iPNiFoFha42aCIzYjt6V8Z+SQ9pzF4jPPzxwXfDdkEWylgoNnZ+4MG1lNFqa8aO7F62tX0Yj5khjC0Bs7Mb2cHLx1XZaxJV6qSaulDuBbLYe8QUZXkMc7wmob3PM0kflfolR3LE7LResIHWa4j4FL6r5cQmFlDU2BDPpKMFMGUfRSFiUtaWBNXFOWHQBC2+uKmuMPYP4vJC9sBgqMvPN/X2KyemqdMvdKXnCfrzadHuSSJYEzD64Cve5Zl9yVvY4AqyBD aws-key
+
+ssh_pwauth: false
+disable_root: false
+package_update: true
+packages:
+  - mariadb-server
+  - mariadb-client
+
+runcmd:
+  - sudo sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/mariadb.conf.d/50-server.cnf
+  - sudo systemctl restart mariadb.service
+  - sudo mysql -sfu root -e "GRANT ALL ON *.* TO 'admin'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;"
+  - sudo mysql -sfu root -e "FLUSH PRIVILEGES;"
