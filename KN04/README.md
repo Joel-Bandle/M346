@@ -147,3 +147,15 @@ Siehe Datei: cloud-init-db.yaml / cloud-init-web.yaml
 ![Picture](8.png)
 ![Picture](9.png)
 ![Picture](10.png)
+
+## Korrekturen
+
+![Picture](11.png)
+![Picture](12.png)
+![Picture](13.png)
+
+### Erklärung Code
+```
+sudo sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/mariadb.conf.d/50-server.cnf
+```
+Der Befehl erlaubt der Datenbank, Verbindungen von anderen Servern anzunehmen, indem die Bind-Adresse von "nur localhost" auf "alle Netzwerke" geändert wird.

@@ -19,6 +19,44 @@ packages:
   - php-mysql
   - adminer
 
+write_files:
+  - path: /var/www/html/info.php
+    content: |
+      <?php
+      phpinfo();
+      ?>
+    permissions: '0644'
+  
+  - path: /var/www/html/db.php
+    content: |
+      <?php
+      $servername = "172.31.74.70";
+      $username = "admin";
+      $password = "password";
+      $dbname = "mysql";
+
+      $conn = new mysqli($servername, $username, $password, $dbname);
+
+      if ($conn->connect_error) {
+          die("Connection failed: " . $conn->connect_error);
+      }
+      echo "<h1>Connected successfully to database!</h1>";
+      
+      $sql = "SELECT User, Host FROM mysql.user";
+      $result = $conn->query($sql);
+
+      if ($result->num_rows > 0) {
+          echo "<h2>Database Users:</h2>";
+          echo "<table border='1'><tr><th>User</th><th>Host</th></tr>";
+          while($row = $result->fetch_assoc()) {
+              echo "<tr><td>" . $row["User"]. "</td><td>" . $row["Host"]. "</td></tr>";
+          }
+          echo "</table>";
+      }
+      $conn->close();
+      ?>
+    permissions: '0644'
+
 runcmd:
   - sudo a2enconf adminer
   - sudo systemctl restart apache2
